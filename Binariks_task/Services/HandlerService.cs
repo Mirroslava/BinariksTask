@@ -9,98 +9,83 @@ namespace Binariks_task.Services
 {
     public class HandlerService: IHandler
     {
-        Liga items1, items2, items3;
-        List<Liga> itemsQwery; 
+        
+        List<League> leagues = new List<League>(); 
         public HandlerService()
         {
-            using (StreamReader fs = new StreamReader("./Content/en.1.json"))
+            for(int i = 1; i <= 4; i++)
             {
-                string json = fs.ReadToEnd();
+                string path = "./Content/en." + i + ".json";
+                using (StreamReader fs = new StreamReader(path))
+                {
+                    string json = fs.ReadToEnd();
 
-                items1 = JsonSerializer.Deserialize<Liga>(json);
-
-
+                   League items = JsonSerializer.Deserialize<League>(json);
+                    leagues.Add(items);
+                }
             }
-            using (StreamReader fs = new StreamReader("./Content/en.2.json"))
-            {
-                string json = fs.ReadToEnd();
-
-                items2 = JsonSerializer.Deserialize<Liga>(json);
-
-
-            }
-            using (StreamReader fs = new StreamReader("./Content/en.3.json"))
-            {
-                string json = fs.ReadToEnd();
-
-                items3 = JsonSerializer.Deserialize<Liga>(json);
-
-
-            }
-            itemsQwery = new List<Liga> { items1, items2, items3 };
-           
-
+          
         }
 
-        public List<LigaReiting> GetBestAttakingTeam()
+        public List<LeagueReiting> GetBestAttakingTeam()
         {
-            List<LigaReiting> ligaReitings = GetLigaReiting();
-            List<LigaReiting> answer = new List<LigaReiting>();
+            List<LeagueReiting> leagueReitings = GetLeagueReiting();
+            List<LeagueReiting> bestTeams = new List<LeagueReiting>();
 
-            foreach (var liga in ligaReitings)
+            foreach (var league in leagueReitings)
             {
-                var teams = liga.Teams.OrderByDescending(x => x.TotalScored).FirstOrDefault();
-                var result = new LigaReiting
+                var team = league.Teams.OrderByDescending(x => x.TotalScored).FirstOrDefault();
+                var result = new LeagueReiting
                 {
-                    Name = liga.Name,
-                    Teams = new List<Team> { teams }
+                    Name = league.Name,
+                    Teams = new List<Team> { team }
 
                 };
-                answer.Add(result);
+                bestTeams.Add(result);
             }
 
-            return answer;
+            return bestTeams;
         }
-        public List<LigaReiting> GetLigaReiting()
+        public List<LeagueReiting> GetLeagueReiting()
         {
-            List<LigaReiting> selects = new List<LigaReiting>();
-            List<LigaReiting> answer = new List<LigaReiting>();
+            List<LeagueReiting> selects = new List<LeagueReiting>();
+            List<LeagueReiting> answer = new List<LeagueReiting>();
 
-            foreach (var liga in itemsQwery)
+            foreach (var league in leagues)
             {
-                var Team1 = liga.matches.Where(x => x.score != null).GroupBy(b => b.team1).Select(g => new Team
+                var Team1 = league.matches.Where(x => x.score != null).GroupBy(b => b.team1).Select(g => new Team
                 {
                     Name = g.Key,
                     TotalScored = g.Sum(a => a.score.ft[0]),
                     TotalMissed = g.Sum(a => a.score.ft[1]),
                 }).ToList();
-                var Team2 = liga.matches.Where(x => x.score != null).GroupBy(b => b.team2).Select(g => new Team
+                var Team2 = league.matches.Where(x => x.score != null).GroupBy(b => b.team2).Select(g => new Team
                 {
                     Name = g.Key,
                     TotalScored = g.Sum(a => a.score.ft[1]),
                     TotalMissed = g.Sum(a => a.score.ft[0]),
                 }).ToList();
                 Team1.AddRange(Team2);
-                var query1 = new LigaReiting
+                var query1 = new LeagueReiting
                 {
-                    Name = liga.name,
+                    Name = league.name,
                     Teams = Team1
 
                 };
                 selects.Add(query1);
                
             }
-            foreach (var liga in selects)
+            foreach (var League in selects)
             {
-                var teams = liga.Teams.GroupBy(x => x.Name).Select(g => new Team
+                var teams = League.Teams.GroupBy(x => x.Name).Select(g => new Team
                 {
                     Name = g.Key,
                     TotalScored = g.Sum(a => a.TotalScored),
                     TotalMissed = g.Sum(a => a.TotalMissed),
                 }).ToList();
-                var result = new LigaReiting
+                var result = new LeagueReiting
                 {
-                    Name = liga.Name,
+                    Name = League.Name,
                     Teams = teams
 
                 };
@@ -109,38 +94,36 @@ namespace Binariks_task.Services
             return answer;
         }
 
-        public List<LigaReiting> GetBestProtectiveTeam()
+        public List<LeagueReiting> GetBestProtectiveTeam()
         {
            
-            List<LigaReiting> ligaReitings = GetLigaReiting();
-            List<LigaReiting> answer = new List<LigaReiting>();
+            List<LeagueReiting> leagueReitings = GetLeagueReiting();
+            List<LeagueReiting> bestTeams = new List<LeagueReiting>();
 
-            foreach (var liga in ligaReitings)
+            foreach (var League in leagueReitings)
             {
-                var teams = liga.Teams.OrderBy(x => x.TotalMissed).FirstOrDefault();
-                var result = new LigaReiting
+                var team = League.Teams.OrderBy(x => x.TotalMissed).FirstOrDefault();
+                var result = new LeagueReiting
                 {
-                    Name = liga.Name,
-                    Teams = new List<Team> { teams }
+                    Name = League.Name,
+                    Teams = new List<Team> { team }
 
                 };
-                answer.Add(result);
+                bestTeams.Add(result);
             }
 
-            return answer;
+            return bestTeams;
         }
 
         public Team GetBestScoredMissedTeam()
         {
             List<Matches> matches = new List<Matches>();
 
-            foreach (var liga in itemsQwery)
+            foreach (var League in leagues)
             {
-
-                matches.AddRange(liga.matches);
+                matches.AddRange(League.matches);
 
             }
-
             var Team = matches.Where(x => x.score != null).GroupBy(b => b.team1).Select(g => new Team
             {
                 Name = g.Key,
@@ -170,10 +153,10 @@ namespace Binariks_task.Services
 
             List<Matches> matches = new List<Matches>();
 
-            foreach (var liga in itemsQwery)
+            foreach (var league in leagues)
             {
 
-                matches.AddRange(liga.matches);
+                matches.AddRange(league.matches);
 
             }
             var query = matches.Where(x => x.score != null).GroupBy(x => x.date).Select(g => new ReitingData

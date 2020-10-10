@@ -6,8 +6,8 @@ namespace Binariks_task.Services
 {
     public interface IHandler
     {
-        List<LigaReiting> GetBestAttakingTeam();
-        List<LigaReiting> GetBestProtectiveTeam();
+        List<LeagueReiting> GetBestAttakingTeam();
+        List<LeagueReiting> GetBestProtectiveTeam();
         Team GetBestScoredMissedTeam();
         ReitingData GetMostEffectiveData();
     }
