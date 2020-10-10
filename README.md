@@ -1,9 +1,5 @@
 # BinariksTask
 
-# Getting Started
-
-Use these instructions to get the project up and running.
-
 ### Prerequisites
 
 You will need the following tools:
