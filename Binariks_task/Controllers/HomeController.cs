@@ -15,11 +15,11 @@ namespace Binariks_task.Controllers
     public class HomeController : Controller
     {
 
-        HandlerService service = new HandlerService();
+        IHandler _service;
 
         public HomeController()
         {
-
+            _service = new HandlerService();
         }
         public ActionResult Start()
         {
@@ -27,20 +27,20 @@ namespace Binariks_task.Controllers
         }
         public ActionResult BestAttakingTeam()
         {
-            return View(service.GetBestAttakingTeam());
+            return View(_service.GetBestAttakingTeam());
         }
          
         public ActionResult BestProtectiveTeam()
         {
-            return View(service.GetBestProtectiveTeam());
+            return View(_service.GetBestProtectiveTeam());
         }
         public ActionResult BestScoredMissedTeam()
         {
-            return View(service.GetBestScoredMissedTeam());
+            return View(_service.GetBestScoredMissedTeam());
         }
         public ActionResult MostEffectiveData()
         {
-            return View(service.GetMostEffectiveData());
+            return View(_service.GetMostEffectiveData());
         }
     }
 }
