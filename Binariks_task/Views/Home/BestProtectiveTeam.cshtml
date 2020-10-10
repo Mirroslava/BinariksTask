@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Binariks_task.Models.LigaReiting>
+@{
+
+}
+<h4>The best defensive team which conceded the fewest goals in its league</h4>
+<table class="table">
+
+    <tr><td>League</td><td>Team</td><td>Total Missed</td></tr>
+    @foreach (var p in Model)
+    {
+        @foreach (var el in p.Teams)
+        {
+
+            <tr><td>@p.Name</td><td>@el.Name</td><td>@el.TotalMissed</td></tr>
+        }
+    }
+</table>

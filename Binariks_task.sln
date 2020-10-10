@@ -1,0 +1,17 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Binariks_task", "Binariks_task\Binariks_task.csproj", "{89A7547B-9C0B-407F-8AD2-16B6721EC113}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{89A7547B-9C0B-407F-8AD2-16B6721EC113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89A7547B-9C0B-407F-8AD2-16B6721EC113}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89A7547B-9C0B-407F-8AD2-16B6721EC113}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89A7547B-9C0B-407F-8AD2-16B6721EC113}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
