@@ -1,6 +1,6 @@
 # BinariksTask
 
-#Getting Started
+# Getting Started
 
 Use these instructions to get the project up and running.
 
